@@ -24,7 +24,7 @@ class FDataBase:
         except: return[]
     
     def get_leaders(self):
-        sql = """SELECT username, best FROM users ORDER BY best ASC"""
+        sql = """SELECT username, best FROM users WHERE best NOT NULL ORDER BY best ASC"""
         try: 
             self.__cur.execute(sql)
             res = self.__cur.fetchall()
