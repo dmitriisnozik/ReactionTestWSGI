@@ -1,0 +1,7 @@
+<div class='menubar'>
+<ul>
+{% for m in menu %}
+	<li><div class="menubtn"><a href='{{ m.url }}'>{{ m.name }}</a></div></li>
+{% endfor %}
+</ul>
+</div>

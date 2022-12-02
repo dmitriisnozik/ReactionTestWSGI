@@ -1,0 +1,21 @@
+{% extends 'template.html' %}
+
+{% block header %}
+{{ username }} profile
+{% endblock %}
+
+{% block content -%}
+<table>
+	<div class="statistics">
+	<tr>
+		<ul>
+		{% for run in stats -%}
+			{% if run.name == username -%}
+			<li>{{run.name}} - {{run.time}}</li>
+			{%- endif %}}
+		{%- endfor %}
+		</ul>
+	</tr>
+	</div>
+</table>
+{%- endblock %}

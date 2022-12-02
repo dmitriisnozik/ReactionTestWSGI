@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>{{ title }}</title>
+</head>
+<body>
+<div class="top_field">
+	<div class="header">
+	{% block header -%}
+	{%- endblock %}
+	</div>
+	<div class="user">
+		{% if current_user.is_authenticated %}
+		<span class="userbtn"><a href="/profile/{{current_user.username()}}">{{ current_user.username() }}</a></span> | <span class="userbtn"><a href="/logout">Log Out</a></span>
+		{% else %}
+		<span class="userbtn"><a href="/login">Log In</a></span> | <span class="userbtn"><a href="/signup">Sign Up</a></span>
+		{% endif %}
+	</div>
+</div>
+<div class="menubar">
+	{% include 'menu.html' %}
+</div>
+<div class='content'>
+{% block content -%}
+{%- endblock %}
+</div>
+</body>
+</html>

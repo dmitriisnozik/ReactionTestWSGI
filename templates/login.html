@@ -1,0 +1,25 @@
+{% extends 'template.html' %}
+
+{% block header %}
+{{ title }}
+{% endblock %}
+
+{% block content %}
+{% for msg in get_flashed_messages() %}
+<div class="flash">{{msg}}</div>
+{% endfor %}
+
+<div class="auth_field">
+	<form action="" method="post" class="form">
+	{{ form.hidden_tag() }}
+	{% for field in form if field.name not in ['csrf_token', 'remember', 'submit'] -%}
+		<p>{{ field.label() }}</p>
+		<p>{{ field() }}</p>
+	{%- endfor %}
+
+	<p>{{ form.remember.label() }} {{ form.remember() }}</p>
+	<p>{{ form.submit() }}</p>
+	</form>
+	<p><a href='/signup'>Dont'have an account? Sign up</a></p>
+</div>
+{% endblock %}

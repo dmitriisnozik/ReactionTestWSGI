@@ -1,0 +1,18 @@
+{% extends 'template.html' %}
+
+{% block header %}
+
+{{ title }}
+
+{% endblock %}
+
+{% block content -%}
+<h1>Leaderboard</h1>
+<div class="leaderboard">
+	<ul>
+	{% for user in leaders %}
+	<li><a href='/profile/{{user.username}}'>{{ user.username }}</a> - {{ user.best }}</li>
+	{% endfor %}
+	</ul>
+</div>
+{%- endblock %}
