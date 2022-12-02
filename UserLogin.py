@@ -1,5 +1,4 @@
 from flask_login import UserMixin
-from flask import url_for
 
 class UserLogin(UserMixin):
     def fromDB(self, user_id, db):
@@ -15,21 +14,3 @@ class UserLogin(UserMixin):
 
     def username(self):
         return str(self.__user['username'])
-
-    def get_avatar(self, app):
-        img = None
-        if not self.__user['avatar']:
-            try:
-                with app.open_resource(app.root_path + url_for('static', filename='images/default.png'), 'rb') as f:
-                    img = f.read()
-            except: print('not found')
-        else: 
-            img = self.__user['avatar']
-        return img
-
-    
-    def verifyExt(self, filename):
-        ext = filename.rsplit('.',1)[1]
-        if ext == "png" or ext == "PNG" or ext == "jpg" or ext == "JPG":
-            return True
-        return False

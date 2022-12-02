@@ -1,6 +1,7 @@
 import sqlite3
 from flask import url_for
 
+
 class FDataBase:
     def __init__(self, db):
         self.__db = db
@@ -11,7 +12,8 @@ class FDataBase:
         try: 
             self.__cur.execute(sql)
             res = self.__cur.fetchall()
-            if res: return res
+            if res:
+                return res
         except:
             print('Database error')
         return[]
@@ -21,7 +23,8 @@ class FDataBase:
             self.__cur.execute(f"SELECT username, best FROM users WHERE username LIKE '{username}'")
             res = self.__cur.fetchall()
             return res
-        except: return[]
+        except:
+            return[]
     
     def get_leaders(self):
         sql = """SELECT username, best FROM users WHERE best NOT NULL ORDER BY best ASC"""
@@ -74,7 +77,8 @@ class FDataBase:
         try: 
             self.__cur.execute(sql)
             res = self.__cur.fetchall()
-            if res: return res
+            if res:
+                return res
         except:
             print('Database error')
         return[]

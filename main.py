@@ -24,10 +24,12 @@ login_manager = LoginManager(app)
 def load_user(user_id):
     return UserLogin().fromDB(user_id, dbase)
 
+
 def connect_db():
     con = sqlite3.connect(app.config['DATABASE'])
     con.row_factory = sqlite3.Row
     return con
+
 
 def create_db():
     db = connect_db()
@@ -36,35 +38,52 @@ def create_db():
     db.commit()
     db.close()
 
+
 def get_db():
     if not hasattr(g, 'link_db'):
         g.link_db = connect_db()
     return g.link_db
 
+
 dbase = None
+
+
 @app.before_request
 def before_request():
     global dbase
     db = get_db()
     dbase = FDataBase(db)
 
+
 @app.route('/')
 @app.route('/index') 
 def index():
-    return render_template('index.html', title='Reaction app', content='circles screen', menu=dbase.get_menu(), session=session)
+    return render_template(
+        'index.html', title='Reaction app', content='circles screen', menu=dbase.get_menu(), session=session
+    )
+
 
 @app.route('/leaders')
 def leaderboard():
-    return render_template('leaderboard.html', title='Leaderboard', scoring='0', menu=dbase.get_menu(), session=session, leaders=dbase.get_leaders())
+    return render_template(
+        'leaderboard.html', title='Leaderboard', scoring='0', menu=dbase.get_menu(), session=session, leaders=dbase.get_leaders()
+    )
+
 
 @app.route('/profile')
 def selfprofile():
     username = current_user.username()
-    return render_template('profile.html', username=username, stats=dbase.get_stats(username), menu=dbase.get_menu(), session=session)
+    return render_template(
+        'profile.html', username=username, stats=dbase.get_stats(username), menu=dbase.get_menu(), session=session
+    )
+
 
 @app.route('/profile/<username>')
 def profile(username):
-    return render_template('profile.html', username=username, current_user=current_user, stats=dbase.get_stats(username), menu=dbase.get_menu(), session=session)
+    return render_template(
+        'profile.html', username=username, current_user=current_user, stats=dbase.get_stats(username), menu=dbase.get_menu(), session=session
+    )
+
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
@@ -79,11 +98,12 @@ def login():
             rem = form.remember.data
             login_user(userlogin, remember=rem)
             return redirect(f'/profile/{current_user.username()}')
-        else: flash('Incorrect input')
+        else:
+            flash('Incorrect input')
     return render_template('login.html', menu=dbase.get_menu(), form=form)
 
 
-@app.route('/signup', methods=['POST','GET'])
+@app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if current_user.is_authenticated:
         return redirect(f'/profile/{current_user.username()}')
@@ -100,11 +120,11 @@ def signup():
     return render_template('signup.html', menu=dbase.get_menu(), form=form)
 
 
-
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect('/login')
+
 
 @app.teardown_appcontext
 def close_db(error):
@@ -112,7 +132,6 @@ def close_db(error):
         g.link_db.close()
 
 
-
 if __name__ == '__main__':
-    #create_db()
-    app.run(debug=True, host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0'
+            )
