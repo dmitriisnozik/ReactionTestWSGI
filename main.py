@@ -88,7 +88,7 @@ def profile(username):
 @login_required
 @app.route('/admin', methods=['POST', 'GET'])
 def admin():
-    if dbase.get_user(current_user.get_id()):
+    if dbase.get_user(current_user.get_id())['admin'] == 1:
         return render_template('admin.html', title='admin panel')
     else:
         abort(403)
