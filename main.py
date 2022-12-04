@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, redirect, flash, session, g
+from flask import Flask, render_template, url_for, redirect, flash, session, g, abort
 import sqlite3
 import os
 from FDataBase import FDataBase
@@ -85,10 +85,19 @@ def profile(username):
     )
 
 
+@login_required
+@app.route('/admin', methods=['POST', 'GET'])
+def admin():
+    if dbase.get_user(current_user.get_id()):
+        return render_template('admin.html', title='admin panel')
+    else:
+        abort(403)
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('profile', current_user.username()))
+        return redirect(url_for('profile', username=current_user.username()))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -97,7 +106,7 @@ def login():
             userlogin = UserLogin().create(user)
             rem = form.remember.data
             login_user(userlogin, remember=rem)
-            return redirect(url_for('profile', current_user.username()))
+            return redirect(url_for('profile', username=current_user.username()))
         else:
             flash('Incorrect input')
     return render_template('login.html', menu=dbase.get_menu(), form=form)
@@ -106,7 +115,7 @@ def login():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if current_user.is_authenticated:
-        return redirect(url_for('profile', current_user.username()))
+        return redirect(url_for('profile', username=current_user.username()))
 
     form = RegisterForm()
     if form.validate_on_submit():
