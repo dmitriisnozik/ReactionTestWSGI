@@ -88,7 +88,7 @@ def profile(username):
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     if current_user.is_authenticated:
-        return redirect(f'/profile/{current_user.username()}')
+        return redirect(url_for('profile', current_user.username()))
 
     form = LoginForm()
     if form.validate_on_submit():
@@ -97,7 +97,7 @@ def login():
             userlogin = UserLogin().create(user)
             rem = form.remember.data
             login_user(userlogin, remember=rem)
-            return redirect(f'/profile/{current_user.username()}')
+            return redirect(url_for('profile', current_user.username()))
         else:
             flash('Incorrect input')
     return render_template('login.html', menu=dbase.get_menu(), form=form)
@@ -106,7 +106,7 @@ def login():
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
     if current_user.is_authenticated:
-        return redirect(f'/profile/{current_user.username()}')
+        return redirect(url_for('profile', current_user.username()))
 
     form = RegisterForm()
     if form.validate_on_submit():
@@ -133,5 +133,4 @@ def close_db(error):
 
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0'
-            )
+    app.run(debug=True, host='0.0.0.0')
