@@ -92,7 +92,7 @@ def profile(username):
 def admin():
     form = AdminForm()
 
-    if dbase.get_user(current_user.get_admin())['admin'] == 1:
+    if dbase.get_user(current_user.get_id())['admin'] == 1:
 
         if form.validate_on_submit():
             if form.add.data:
@@ -103,6 +103,31 @@ def admin():
                     dbase.remove_by_name(form.username.data)
                 if form.id.data:
                     dbase.remove_by_id(form.id.data)
+            if form.changename.data:
+                if form.newusername.data and form.username.data:
+                    dbase.change_name_by_name(form.username.data, form.newusername.data)
+                if form.newusername.data and form.id.data:
+                    dbase.change_name_by_id(form.id.data, form.newusername.data)
+            if form.changepass.data:
+                if form.newpassword.data and form.username.data:
+                    dbase.change_password_by_name(form.username.data, generate_password_hash(form.newpassword.data))
+                if form.newpassword.data and form.id.data:
+                    dbase.change_password_by_id(form.id.data, generate_password_hash(form.newpassword.data))
+            if form.changeresult.data:
+                if form.newresult.data and form.username.data:
+                    dbase.change_result_by_name(form.username.data, form.newresult.data)
+                if form.newresult.data and form.id.data:
+                    dbase.change_result_by_id(form.id.data, form.newresult.data)
+            if form.setadmin.data:
+                if form.username.data:
+                    dbase.op_by_name(form.username.data, 1)
+                if form.id.data:
+                    dbase.op_by_id(form.id.data, 1)
+            if form.removeadmin.data:
+                if form.username.data:
+                    dbase.op_by_name(form.username.data, 0)
+                if form.id.data:
+                    dbase.op_by_id(form.id.data, 0)
 
         return render_template('admin.html', title='admin panel', base=dbase.get_all_users(), form=form)
     else:

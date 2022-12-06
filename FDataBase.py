@@ -80,6 +80,76 @@ class FDataBase:
         except: 
             return False
     
+    def remove_by_id(self, user_id):
+        try:
+            self.__cur.execute(f"DELETE FROM users WHERE id = {int(user_id)}")
+            self.__db.commit()
+        except:
+            print('deleting error')
+
+    def remove_by_name(self, username):
+        try:
+            self.__cur.execute(f"DELETE FROM users WHERE username LIKE '{username}'")
+            self.__db.commit()
+        except:
+            print('deleting error')
+
+    def change_name_by_name(self, username, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET username='{new}' WHERE username LIKE '{username}'")
+            self.__db.commit()
+        except:
+            print('changing error')
+
+    def change_name_by_id(self, user_id, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET username='{new}' WHERE id = {user_id}")
+            self.__db.commit()
+        except:
+            print('changing error')
+
+    def change_password_by_name(self, username, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET password='{new}' WHERE username LIKE '{username}'")
+            self.__db.commit()
+        except:
+            print('changing error')
+
+    def change_password_by_id(self, user_id, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET password='{new}' WHERE id = {user_id}")
+            self.__db.commit()
+        except:
+            print('changing error')
+
+    def change_result_by_name(self, username, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET best='{new}' WHERE username LIKE '{username}'")
+            self.__db.commit()
+        except:
+            print('changing error')
+
+    def change_result_by_id(self, user_id, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET best='{new}' WHERE id = {user_id}")
+            self.__db.commit()
+        except:
+            print('changing error')
+        
+    def op_by_name(self, username, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET admin='{new}' WHERE username LIKE '{username}'")
+            self.__db.commit()
+        except:
+            print('changing error')
+
+    def op_by_id(self, user_id, new):
+        try:
+            self.__cur.execute(f"UPDATE users SET admin='{new}' WHERE id = {user_id}")
+            self.__db.commit()
+        except:
+            print('changing error')
+    
     def get_menu(self):
         sql = """SELECT * FROM menu"""
         try: 
