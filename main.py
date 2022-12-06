@@ -5,7 +5,7 @@ from FDataBase import FDataBase
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import LoginManager, login_user, logout_user, current_user, login_required
 from UserLogin import UserLogin
-from forms import LoginForm, RegisterForm
+from forms import LoginForm, RegisterForm, AdminForm
 
 DATABASE = 'database.db'
 DEBUG = True
@@ -66,7 +66,8 @@ def index():
 @app.route('/leaders')
 def leaderboard():
     return render_template(
-        'leaderboard.html', title='Leaderboard', scoring='0', menu=dbase.get_menu(), session=session, leaders=dbase.get_leaders()
+        'leaderboard.html', title='Leaderboard', scoring='0',
+        menu=dbase.get_menu(), session=session, leaders=dbase.get_leaders()
     )
 
 
@@ -81,15 +82,29 @@ def selfprofile():
 @app.route('/profile/<username>')
 def profile(username):
     return render_template(
-        'profile.html', username=username, current_user=current_user, stats=dbase.get_stats(username), menu=dbase.get_menu(), session=session
+        'profile.html', username=username, current_user=current_user,
+        stats=dbase.get_stats(username), menu=dbase.get_menu(), session=session
     )
 
 
 @login_required
 @app.route('/admin', methods=['POST', 'GET'])
 def admin():
-    if dbase.get_user(current_user.get_id())['admin'] == 1:
-        return render_template('admin.html', title='admin panel')
+    form = AdminForm()
+
+    if dbase.get_user(current_user.get_admin())['admin'] == 1:
+
+        if form.validate_on_submit():
+            if form.add.data:
+                if form.newusername.data and form.newpassword.data:
+                    dbase.add_new(form.newusername.data, generate_password_hash(form.newpassword.data))
+            if form.remove.data:
+                if form.username.data:
+                    dbase.remove_by_name(form.username.data)
+                if form.id.data:
+                    dbase.remove_by_id(form.id.data)
+
+        return render_template('admin.html', title='admin panel', base=dbase.get_all_users(), form=form)
     else:
         abort(403)
 

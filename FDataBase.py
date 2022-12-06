@@ -25,6 +25,14 @@ class FDataBase:
             return res
         except:
             return[]
+
+    def get_all_users(self):
+        try:
+            self.__cur.execute("SELECT id, username, best, admin FROM users")
+            res = self.__cur.fetchall()
+            return res
+        except:
+            return[]
     
     def get_leaders(self):
         sql = """SELECT username, best FROM users WHERE best NOT NULL ORDER BY best ASC"""

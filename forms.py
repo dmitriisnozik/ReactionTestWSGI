@@ -15,3 +15,18 @@ class RegisterForm(FlaskForm):
     password = PasswordField("Password: ", validators=[DataRequired(), Length(min=5, max=100)])
     confirm_password = PasswordField("Confirm password: ", validators=[DataRequired(), Length(min=5, max=100)])
     submit = SubmitField("Sign Up")
+
+class AdminForm(FlaskForm):
+    id = StringField("User ID: ")
+    username = StringField("Username: ")
+    newusername = StringField("New username: ")
+    newresult = StringField("New result: ")
+    newpassword = StringField("New password: ")
+    add = BooleanField("Add", default=False)
+    remove = BooleanField("Remove", default=False)
+    changename = BooleanField("Change username", default=False)
+    changepass = BooleanField("Change password", default=False)
+    changeresult = BooleanField("Change result", default=False)
+    setadmin = BooleanField("Set admin", default=False)
+    removeadmin = BooleanField("Remove admin", default=False)
+    submit = SubmitField("Submit")
