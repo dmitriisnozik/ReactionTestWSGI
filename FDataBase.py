@@ -80,72 +80,53 @@ class FDataBase:
         except: 
             return False
     
-    def remove_by_id(self, user_id):
+    def remove(self, user_id=None, username=None):
         try:
-            self.__cur.execute(f"DELETE FROM users WHERE id = {int(user_id)}")
+            if user_id is not None:
+                self.__cur.execute(f"DELETE FROM users WHERE id = {int(user_id)}")
+            if username is not None:
+                self.__cur.execute(f"DELETE FROM users WHERE username LIKE '{username}'")
             self.__db.commit()
         except:
             print('deleting error')
 
-    def remove_by_name(self, username):
-        try:
-            self.__cur.execute(f"DELETE FROM users WHERE username LIKE '{username}'")
-            self.__db.commit()
-        except:
-            print('deleting error')
 
-    def change_name_by_name(self, username, new):
+    def change_name(self, username=None, user_id=None, new=None):
         try:
-            self.__cur.execute(f"UPDATE users SET username='{new}' WHERE username LIKE '{username}'")
+            if username is not None:
+                self.__cur.execute(f"UPDATE users SET username='{new}' WHERE username LIKE '{username}'")
+            if user_id is not None:
+                self.__cur.execute(f"UPDATE users SET username='{new}' WHERE id = {user_id}")
             self.__db.commit()
         except:
             print('changing error')
 
-    def change_name_by_id(self, user_id, new):
+    def change_password(self, username=None, user_id=None, new=None):
         try:
-            self.__cur.execute(f"UPDATE users SET username='{new}' WHERE id = {user_id}")
+            if username is not None:
+                self.__cur.execute(f"UPDATE users SET password='{new}' WHERE username LIKE '{username}'")
+            if user_id is not None:
+                self.__cur.execute(f"UPDATE users SET password='{new}' WHERE id = {user_id}")
             self.__db.commit()
         except:
             print('changing error')
 
-    def change_password_by_name(self, username, new):
+    def change_result(self, username=None, user_id=None, new=None):
         try:
-            self.__cur.execute(f"UPDATE users SET password='{new}' WHERE username LIKE '{username}'")
-            self.__db.commit()
-        except:
-            print('changing error')
-
-    def change_password_by_id(self, user_id, new):
-        try:
-            self.__cur.execute(f"UPDATE users SET password='{new}' WHERE id = {user_id}")
-            self.__db.commit()
-        except:
-            print('changing error')
-
-    def change_result_by_name(self, username, new):
-        try:
-            self.__cur.execute(f"UPDATE users SET best='{new}' WHERE username LIKE '{username}'")
-            self.__db.commit()
-        except:
-            print('changing error')
-
-    def change_result_by_id(self, user_id, new):
-        try:
-            self.__cur.execute(f"UPDATE users SET best='{new}' WHERE id = {user_id}")
+            if username is not None:
+                self.__cur.execute(f"UPDATE users SET best='{new}' WHERE username LIKE '{username}'")
+            if user_id is not None:
+                self.__cur.execute(f"UPDATE users SET best='{new}' WHERE id = {user_id}")
             self.__db.commit()
         except:
             print('changing error')
         
-    def op_by_name(self, username, new):
+    def op(self, username=None, user_id=None, admin=1):
         try:
-            self.__cur.execute(f"UPDATE users SET admin='{new}' WHERE username LIKE '{username}'")
-            self.__db.commit()
-        except:
-            print('changing error')
-
-    def op_by_id(self, user_id, new):
-        try:
-            self.__cur.execute(f"UPDATE users SET admin='{new}' WHERE id = {user_id}")
+            if username is not None:
+                self.__cur.execute(f"UPDATE users SET admin='{admin}' WHERE username LIKE '{username}'")
+            if user_id is not None:
+                self.__cur.execute(f"UPDATE users SET admin='{admin}' WHERE id = {user_id}")
             self.__db.commit()
         except:
             print('changing error')
