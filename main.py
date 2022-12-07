@@ -100,34 +100,34 @@ def admin():
                     dbase.add_new(form.newusername.data, generate_password_hash(form.newpassword.data))
             if form.remove.data:
                 if form.username.data:
-                    dbase.remove_by_name(form.username.data)
+                    dbase.remove(username=form.username.data)
                 if form.id.data:
-                    dbase.remove_by_id(form.id.data)
+                    dbase.remove(user_id=form.id.data)
             if form.changename.data:
                 if form.newusername.data and form.username.data:
-                    dbase.change_name_by_name(form.username.data, form.newusername.data)
+                    dbase.change_name(username=form.username.data, new=form.newusername.data)
                 if form.newusername.data and form.id.data:
-                    dbase.change_name_by_id(form.id.data, form.newusername.data)
+                    dbase.change_name(user_id=form.id.data, new=form.newusername.data)
             if form.changepass.data:
                 if form.newpassword.data and form.username.data:
-                    dbase.change_password_by_name(form.username.data, generate_password_hash(form.newpassword.data))
+                    dbase.change_password(username=form.username.data, new=generate_password_hash(form.newpassword.data))
                 if form.newpassword.data and form.id.data:
-                    dbase.change_password_by_id(form.id.data, generate_password_hash(form.newpassword.data))
+                    dbase.change_password(user_id=form.id.data, new=generate_password_hash(form.newpassword.data))
             if form.changeresult.data:
                 if form.newresult.data and form.username.data:
-                    dbase.change_result_by_name(form.username.data, form.newresult.data)
+                    dbase.change_result(username=form.username.data, new=form.newresult.data)
                 if form.newresult.data and form.id.data:
-                    dbase.change_result_by_id(form.id.data, form.newresult.data)
+                    dbase.change_result(user_id=form.id.data, new=form.newresult.data)
             if form.setadmin.data:
                 if form.username.data:
-                    dbase.op_by_name(form.username.data, 1)
+                    dbase.op(username=form.username.data)
                 if form.id.data:
-                    dbase.op_by_id(form.id.data, 1)
+                    dbase.op(user_id=form.id.data)
             if form.removeadmin.data:
                 if form.username.data:
-                    dbase.op_by_name(form.username.data, 0)
+                    dbase.op(username=form.username.data, admin=0)
                 if form.id.data:
-                    dbase.op_by_id(form.id.data, 0)
+                    dbase.op(user_id=form.id.data, admin=0)
 
         return render_template('admin.html', title='admin panel', base=dbase.get_all_users(), form=form)
     else:
